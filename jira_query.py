@@ -5,10 +5,24 @@ import subprocess
 import argparse
 
 DEFAULT_CONF_FILE = '~/.jira-query'
-DEFAULT_OUTPUT_FORMAT = '{key}'
+DEFAULT_OUTPUT_FIELDS = ['key']
+
+
+def csv_list(string):
+   """
+   Use this function as an argparse argument type.  It allows the following
+   kind of argument to be parsed as a python list:
+
+     $ command -l this,is,a,list
+
+   which becomes the list ['this', 'is', 'a', 'list'] after calling
+   parse_args().
+   """
+   return string.split(',')
 
 
 def setup_client(conf_file):
+    """read the configuration file and create a JIRA object"""
     with open(expanduser(conf_file)) as f:
         conf = yaml.load(f)
     jira_server = conf['server']
@@ -22,19 +36,18 @@ def setup_client(conf_file):
 def main():
     parser = argparse.ArgumentParser(description="Search for JIRA issues")
     parser.add_argument("query", help="JQL query", type=str)
-    parser.add_argument("-f", "--format", help="format string", type=str, default=DEFAULT_OUTPUT_FORMAT)
+    parser.add_argument("-f", "--fields", help="issue fields to print", type=csv_list, default=DEFAULT_OUTPUT_FIELDS)
     parser.add_argument("-c", "--config", help="alternate location for the config file", type=str, default=DEFAULT_CONF_FILE)
     args = parser.parse_args()
 
     jira = setup_client(args.config)
 
-    #jira.search_issues('project=PROJ and assignee != currentUser()')
     issues = jira.search_issues(args.query)
 
     for issue in issues:
         data = dict(issue.fields.__dict__)
         data['key'] = issue.key
-        print(args.format.format(**data))
+        print('\t'.join([data[f] for f in args.fields]))
 
 
 if __name__ == '__main__':

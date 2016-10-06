@@ -22,10 +22,10 @@ pass_cmd: gpg --decrypt ~/.jira.pass
 2. Try it out
 
 ```
-% jira-query -f '{key}, {summary}' 'project=PERF and assignee = currentUser()' 2>/dev/null
-PERF-374, show that locust tests are imbalanced
-PERF-372, make NR report request queueing
-PERF-371, Balanced LMS loadtest
+% jira-query -f key,summary 'project=PERF and assignee = currentUser()'
+PERF-374	show that locust tests are imbalanced
+PERF-372	make NR report request queueing
+PERF-371	Balanced LMS loadtest
 [...]
 ```
 
@@ -44,15 +44,15 @@ Linux, [xmenu](https://github.com/uluyol/xmenu) for Mac,
 #!/usr/bin/env sh
 #
 # my_qa_issues.sh - Prompt for QA issues assigned to yourself, and open the
-#                   selected issue in a browser.
+#                   selected issue in a web browser.
 #
 
-selection=$(jira-query -f '{key}, {summary}' 'project=QA and assignee=currentUser()' | dmenu -l 20)
-url=$(echo "$selection" | cut -d, -f1 | xargs -I{} echo http://openedx.atlassian.net/browse/{})
+selection=$(jira-query -f key,summary 'project=QA and assignee=currentUser()' | dmenu -l 20)
+url=$(echo "$selection" | cut -f1 | xargs -I{} echo http://openedx.atlassian.net/browse/{})
 surf $url
 ```
 
 ## password management
 
 The `pass_cmd` field in the configuration file allows the use of your favorite
-password manager, such as pass(1) or lastpass.
+password manager, such as pass(1) or the lastpass CLI.
