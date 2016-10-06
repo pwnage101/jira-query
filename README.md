@@ -10,26 +10,26 @@ clients on my JIRA instance (I am not a JIRA administrator at my organization).
 
 # Quickstart
 
-1. Prep a configuration file
+1. Prep a configuration file `~/.jira-query`
 
-    ```yaml
-    ---
-    server: https://openedx.atlassian.net/
-    username: tsankey@edx.org
-    pass_cmd: gpg --decrypt ~/.jira.pass
-    ```
+```yaml
+---
+server: https://example.atlassian.net/
+username: joe@example.com
+pass_cmd: gpg --decrypt ~/.jira.pass
+```
 
 2. Try it out
 
-    ```
-    % jira-query -f '{key}, {summary}' 'project=PERF and assignee = currentUser()' 2>/dev/null
-    PERF-374, show that locust tests are imbalanced
-    PERF-372, make NR report request queueing
-    PERF-371, Balanced LMS loadtest
-    [...]
-    ```
+```
+% jira-query -f '{key}, {summary}' 'project=PERF and assignee = currentUser()' 2>/dev/null
+PERF-374, show that locust tests are imbalanced
+PERF-372, make NR report request queueing
+PERF-371, Balanced LMS loadtest
+[...]
+```
 
-4. Make something useful
+4. Make something useful :-)
 
 # Tips
 
