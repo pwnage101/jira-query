@@ -5,6 +5,7 @@ import subprocess
 import argparse
 
 DEFAULT_CONF_FILE = '~/.jira-query'
+DEFAULT_OUTPUT_FORMAT = '{key}'
 
 
 def setup_client(conf_file):
@@ -21,7 +22,7 @@ def setup_client(conf_file):
 def main():
     parser = argparse.ArgumentParser(description="Search for JIRA issues")
     parser.add_argument("query", help="JQL query", type=str)
-    parser.add_argument("-f", "--format", help="format string", type=str, default='{key}')
+    parser.add_argument("-f", "--format", help="format string", type=str, default=DEFAULT_OUTPUT_FORMAT)
     parser.add_argument("-c", "--config", help="alternate location for the config file", type=str, default=DEFAULT_CONF_FILE)
     args = parser.parse_args()
 
