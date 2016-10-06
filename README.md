@@ -22,15 +22,37 @@ clients on my JIRA instance (I am not a JIRA administrator at my organization).
 2. Try it out
 
     ```
-    jira-query -f '{key}, {summary}' 'project=PERF and assignee = currentUser()'
+    % jira-query -f '{key}, {summary}' 'project=PERF and assignee = currentUser()' 2>/dev/null
+    PERF-374, show that locust tests are imbalanced
+    PERF-372, make NR report request queueing
+    PERF-371, Balanced LMS loadtest
+    [...]
     ```
 
-3. Leverage [dmenu](http://tools.suckless.org/dmenu/) ([xmenu](https://github.com/uluyol/xmenu) for mac users) for user input
+4. Make something useful
+
+# Tips
+
+## menuing systems
+
+One of the most basic ways of interacting with `jira-query` is via a generic
+menuing system.  Examples include [dmenu](http://tools.suckless.org/dmenu/) for
+Linux, [xmenu](https://github.com/uluyol/xmenu) for Mac,
+[Alfred](https://www.alfredapp.com/) for Mac, etc.
 
     ```
-    selection=$(jira-query -f '{key}, {summary}' 'project=PERF and assignee = currentUser()' | dmenu -l 20)
+    #!/usr/bin/env sh
+    #
+    # my_qa_issues.sh - Prompt for QA issues assigned to yourself, and open the
+    #                   selected issue in a browser.
+    #
+
+    selection=$(jira-query -f '{key}, {summary}' 'project=QA and assignee=currentUser()' | dmenu -l 20)
     url=$(echo "$selection" | cut -d, -f1 | xargs -I{} echo http://openedx.atlassian.net/browse/{})
     surf $url
     ```
 
-4. Make something useful
+## password management
+
+The `pass_cmd` field in the configuration file allows the use of your favorite
+password manager, such as pass(1) or lastpass.
