@@ -40,17 +40,17 @@ menuing system.  Examples include [dmenu](http://tools.suckless.org/dmenu/) for
 Linux, [xmenu](https://github.com/uluyol/xmenu) for Mac,
 [Alfred](https://www.alfredapp.com/) for Mac, etc.
 
-    ```
-    #!/usr/bin/env sh
-    #
-    # my_qa_issues.sh - Prompt for QA issues assigned to yourself, and open the
-    #                   selected issue in a browser.
-    #
+```
+#!/usr/bin/env sh
+#
+# my_qa_issues.sh - Prompt for QA issues assigned to yourself, and open the
+#                   selected issue in a browser.
+#
 
-    selection=$(jira-query -f '{key}, {summary}' 'project=QA and assignee=currentUser()' | dmenu -l 20)
-    url=$(echo "$selection" | cut -d, -f1 | xargs -I{} echo http://openedx.atlassian.net/browse/{})
-    surf $url
-    ```
+selection=$(jira-query -f '{key}, {summary}' 'project=QA and assignee=currentUser()' | dmenu -l 20)
+url=$(echo "$selection" | cut -d, -f1 | xargs -I{} echo http://openedx.atlassian.net/browse/{})
+surf $url
+```
 
 ## password management
 
